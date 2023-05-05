@@ -81,9 +81,10 @@ fetch(urlPost)
               modalB.textContent = "USER"
               const modalP2 = document.createElement("p");
               modalP2.setAttribute("id", "UserName");
-
+              modalP2.textContent = "${userName}";
               const modalP3 = document.createElement("p");
               modalP3.setAttribute("id", "UserEmail");
+              modalP3.textContent = "${userEmail}";
               const modalBtnLoadComments = document.createElement("button");
               modalBtnLoadComments.setAttribute("type", "button");
               modalBtnLoadComments.setAttribute("class", "btn btn-dark");
@@ -148,8 +149,7 @@ fetch(urlPost)
               // sectionPost.appendChild(user);
               const userName = ele.name;
               // userName.textContent = ele.name;
-              // const userEmail = document.createElement("span");
-              // userEmail.textContent = ele.email;
+              const userEmail = ele.email;
               // sectionPost.appendChild(userName);
               // sectionPost.appendChild(userEmail);
               // const btnComment = document.createElement("button");
