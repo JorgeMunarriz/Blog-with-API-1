@@ -120,7 +120,7 @@ fetch(urlPost)
               modal.appendChild(modalDialog);
               modalDialog.appendChild(modalContent);
               modalContent.appendChild(modalHeader);
-              modalHeader.appendChild(modalTittle);
+              modalHeader.appendChild(modalTittle);git 
               modalHeader.appendChild(modalCancel)
               modalContent.appendChild(modalBody);
               modalBody.appendChild(modalP);
