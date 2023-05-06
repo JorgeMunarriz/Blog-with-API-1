@@ -1,5 +1,5 @@
-const urlUser = "http://localhost:3000/users/";
-const urlPost = " http://localhost:3000/posts/";
+const urlUser = "http://localhost:3000/users";
+const urlPost = " http://localhost:3000/posts";
 const urlComments = "http://localhost:3000/comments/";
 
 const mainPage = document.querySelector("#main");
@@ -120,7 +120,7 @@ fetch(urlPost)
               modal.appendChild(modalDialog);
               modalDialog.appendChild(modalContent);
               modalContent.appendChild(modalHeader);
-              modalHeader.appendChild(modalTittle);git 
+              modalHeader.appendChild(modalTittle);
               modalHeader.appendChild(modalCancel)
               modalContent.appendChild(modalBody);
               modalBody.appendChild(modalP);
