@@ -1,30 +1,35 @@
 const urlUser = "http://localhost:3000/users/";
 const urlPost = " http://localhost:3000/posts/";
 const urlComments = "http://localhost:3000/comments/";
-const bodyPage = document.querySelector("#body")
+const bodyPage = document.querySelector("#body");
 
-const divContainer = document.createElement("div")
-divContainer.setAttribute("class", "container border bg-light")
-bodyPage.appendChild(divContainer)
-const divHeader = document.createElement("div")
-divHeader.setAttribute("class", "row justify-content-center my-3 bg-info border gx-1")
-divContainer.appendChild(divHeader)
-const header = document.createElement("header")
-header.setAttribute("id", "header")
-divHeader.appendChild(header)
-const divH1 = document.createElement("div");
-divH1.setAttribute("class", "col text-center");
-header.appendChild(divH1);
-const h1 = document.createElement("h1");
-h1.setAttribute("class", "display-6")
-h1.textContent = "Blog with API";
-divH1.appendChild(h1)
-const mainPage = document.createElement("main");
-mainPage.setAttribute("id", "mainPost")
-mainPage.setAttribute("class", "col" )
-divContainer.appendChild(mainPage);
+// const divContainer = document.createElement("div");
+// divContainer.setAttribute("class", "container border bg-light");
+// bodyPage.appendChild(divContainer);
+// const divHeader = document.createElement("div");
+// divHeader.setAttribute(
+//   "class",
+//   "row justify-content-center my-3 bg-info border gx-1"
+// );
+// divContainer.appendChild(divHeader);
+// const header = document.createElement("header");
+// header.setAttribute("id", "header");
+// divHeader.appendChild(header);
+// const divH1 = document.createElement("div");
+// divH1.setAttribute("class", "col text-center");
+// header.appendChild(divH1);
+// const h1 = document.createElement("h1");
+// h1.setAttribute("class", "display-6");
+// h1.textContent = "Blog with API";
+// divH1.appendChild(h1);
+// const mainPage = document.createElement("main");
+// mainPage.setAttribute("id", "mainPost");
+// mainPage.setAttribute("class", "col");
+// divContainer.appendChild(mainPage);
+// const mainPost = document.createElement("div");
+// mainPost.setAttribute("class", "col");
 
-const postsBody = document.createElement("div")
+const postsBody = document.querySelector("#postsBody");
 const loadCommentsBtn = document.querySelector("#loadCommentsBtn");
 const saveChangesBtn = document.querySelector("#saveChangesBtn");
 let elementNumber = 0;
@@ -36,22 +41,18 @@ fetch(urlPost)
   .then((data) => {
     data.forEach((element) => {
       elementNumber++;
-      const mainPost = document.createElement("div");
-      mainPost.setAttribute("class", "col")
-      const postBody = document.createElement("div");
-      postBody.setAttribute("id","postBody");
-      postBody.setAttribute("class", "row justify-content-center align-items-flex-center")
-      const postSection = document.createElement("section");
-      postSection.setAttribute(
-        "class",
-        "d-flex border border-secondary rounded "
-      );
+
+      const postSection = document.createElement("div");
+      postSection.setAttribute("class", "row");
+      postSection.setAttribute("data-elementnumber", elementNumber);
       const divContainer = document.createElement("div");
-      divContainer.setAttribute("class", "d-flex flex-column");
-      const divIcons = document.createElement("div");
-      divIcons.setAttribute("class", "d-flex ");
+      divContainer.setAttribute("class", "col-10");
+      const divIcons1 = document.createElement("div");
+      divIcons1.setAttribute("class", "col ");
+      const divIcons2 = document.createElement("div");
+      divIcons2.setAttribute("class", "col ");
       const titlePost = document.createElement("button");
-      titlePost.innerText = element.title;
+      titlePost.textContent = element.title;
       titlePost.classList.add("btn");
       titlePost.classList.add("btn-outline-dark");
       titlePost.setAttribute("type", "button");
@@ -60,30 +61,98 @@ fetch(urlPost)
       titlePost.setAttribute("data-id", element.id);
       titlePost.setAttribute("data-userId", element.userId);
       titlePost.setAttribute("id", "openPost");
+      titlePost.setAttribute("data-element", elementNumber);
+      titlePost.addEventListener("click", (event) => {
+        deleteComents();
+        loadCommentsBtn.classList.remove("disabled");
+        const id = titlePost.dataset.id;
+        const userId = event.target.getAttribute("data-userId");
+        const modalTittle = document.querySelector("#modalLabel");
+        const modalBody = document.querySelector("#modalBody");
+        const user = document.querySelector("#user");
+        const userName = document.querySelector("#userName");
+        const userEmail = document.querySelector("#userEmail");
+        loadCommentsBtn.setAttribute("data-userId", userId);
+        pickedPost = event.currentTarget.getAttribute("data-element");
+        console.log(pickedPost);
+        fetch(`http://localhost:3000/posts?id=${id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            modalTittle.innerText = data[0].title;
+            modalBody.innerText = data[0].body;
+          });
+        fetch(`http://localhost:3000/users/${userId}`)
+          .then((response) => response.json())
+          .then((users) => {
+            user.innerText = users.name;
+            userName.innerText = users.username;
+            userEmail.innerText = users.email;
+          });
+      });
       const paragraph = document.createElement("p");
       const btnIcon1 = document.createElement("button");
       btnIcon1.setAttribute("class", "btn btn-small");
+      btnIcon1.classList.add("btn");
+      btnIcon1.classList.add("btn-dark");
+      btnIcon1.setAttribute("type", "button");
+      btnIcon1.setAttribute("data-bs-toggle", "modal");
+      btnIcon1.setAttribute("data-bs-target", "#editorModal");
+      btnIcon1.setAttribute("data-elementNumber", elementNumber);
+      btnIcon1.setAttribute("data-userId", element.userId);
+      btnIcon1.addEventListener("click", (event) => {
+        targetToChange = event.currentTarget.getAttribute("data-elementNumber");
+        console.log(targetToChange);
+        const modalEditTitle = document.querySelector("#modalEditTitle");
+        modalEditTitle.textContent = titlePost.textContent;
+      });
+      const editPostIcon1 = document.createElement("i");
+      editPostIcon1.setAttribute("class", "fa-regular fa-pen-to-square");
+      btnIcon1.appendChild(editPostIcon1);
       const btnIcon2 = document.createElement("button");
-      btnIcon2.setAttribute("class", "btn btn-small");
+      btnIcon2.classList.add("btn");
+      btnIcon2.classList.add("btn-dark");
+      btnIcon2.setAttribute("data-elementNumber", elementNumber);
+      btnIcon2.setAttribute("type", "button");
+      btnIcon2.addEventListener("click", (event) => {
+        const targetElement =
+          event.currentTarget.getAttribute("data-elementNumber");
+        const elementToDelete = document.querySelector(
+          `[data-elementNumber="${targetElement}"]`
+        );
+        if (elementToDelete) {
+          elementToDelete.remove();
+          alert("Element removed correctly!");
+        }
+      });
+
+      const deletePostIcon2 = document.createElement("i");
+      deletePostIcon2.setAttribute("class", "fa-regular fa-circle-xmark");
+      btnIcon2.appendChild(deletePostIcon2);
 
       paragraph.textContent = element.body;
       btnIcon1.setAttribute("class", "btn btn-dark");
-      btnIcon1.setAttribute("type", "button")
-      btnIcon1.setAttribute("data-bs-toggle", "modal")
-      btnIcon1.setAttribute("data-bs-target", "#editorModal")
-      btnIcon1.setAttribute("data-elementnumber", "1")
+      btnIcon1.setAttribute("type", "button");
+      btnIcon1.setAttribute("data-bs-toggle", "modal");
+      btnIcon1.setAttribute("data-bs-target", "#editorModal");
+      btnIcon1.setAttribute("data-elementnumber", elementNumber);
 
       btnIcon1.id = "btnToggle";
-      btnIcon2.innerHTML = '<i class="bi bi-x-circle"></i>';
+
       // titlePost.setAttribute("class", "d-flex");
-      mainPage.appendChild(mainPost);
-      mainPost.appendChild(postSection)
+      // mainPage.appendChild(mainPost);
+      // mainPost.appendChild(postsBody);
+      postsBody.appendChild(postSection);
       postSection.appendChild(divContainer);
+      postSection.appendChild(divIcons1);
+      postSection.appendChild(divIcons2);
       divContainer.appendChild(titlePost);
       divContainer.appendChild(paragraph);
-      postSection.appendChild(divIcons);
-      divIcons.appendChild(btnIcon1);
-      divIcons.appendChild(btnIcon2);
+
+      divIcons1.appendChild(btnIcon1);
+      divIcons2.appendChild(btnIcon2);
+      const separator = document.createElement("hr");
+      separator.classList.add("my-2");
+      postSection.appendChild(separator);
 
       titlePost.addEventListener("click", pushBtnToggle);
 
@@ -92,17 +161,18 @@ fetch(urlPost)
           .then((res) => res.json())
           .then((data) => {
             data.forEach((e) => {
-              mainPage.replaceChildren();
+              body.classList.add("modal-open");
+              body.setAttribute("style", "hidden; padding-right: 17px;");
               const userName = e.name;
               const userEmail = e.email;
-              const sectionPost = document.createElement("section");
-              sectionPost.setAttribute("class", "section");
-              sectionPost.style.display = "block";
-              sectionPost.style.width = "500px";
-              sectionPost.style.height = "50vh";
+              // const sectionPost = document.createElement("section");
+              // sectionPost.setAttribute("class", "section");
+              // sectionPost.style.display = "block";
+              // sectionPost.style.width = "500px";
+              // sectionPost.style.height = "50vh";
 
               const modal = document.createElement("div");
-              modal.setAttribute("class", "modal fade");
+              modal.setAttribute("class", "modal fade show");
               modal.setAttribute("id", "modal");
               modal.setAttribute("tabindex", "1");
               modal.setAttribute("aria-labelledby", "exampleModalLabel");
@@ -169,8 +239,8 @@ fetch(urlPost)
               // modalBtnSave.setAttribute("data-bs-dismiss", "modal");
               // modalBtnSave.textContent = "Save changes";
 
-              mainPage.appendChild(sectionPost);
-              sectionPost.appendChild(modal);
+              // mainPage.appendChild(sectionPost);
+              // sectionPost.appendChild(modal);
               modal.appendChild(modalDialog);
               modalDialog.appendChild(modalContent);
               modalContent.appendChild(modalHeader);
@@ -191,7 +261,9 @@ fetch(urlPost)
               modalDivRowComment.appendChild(modalCommentP3);
               modalContent.appendChild(modalFooter);
               modalFooter.appendChild(modalBtnClose);
+              modalCancel.addEventListener("click", returnBody);
 
+              function returnBody() {}
               // sectionPost.appendChild(titlePost);
               // sectionPost.appendChild(paragraph);
 
@@ -212,3 +284,79 @@ fetch(urlPost)
     console.log(data);
     // const btnIconToggle = document.querySelector("#btnToggle");
   });
+
+function deleteComents() {
+  const commentSection = document.querySelector("#commentSection");
+  while (commentSection.firstChild) {
+    commentSection.removeChild(commentSection.firstChild);
+  }
+}
+function loadComments(data) {
+  const commentSection = document.querySelector("#commentSection");
+  data.forEach((element) => {
+    const commentRow = document.createElement("div");
+    commentRow.classList.add("row");
+
+    const commentName = document.createElement("p");
+    commentName.innerText = element.name;
+    commentRow.appendChild(commentName);
+
+    const commentsEmail = document.createElement("p");
+    commentsEmail.innerText = element.email;
+    commentRow.appendChild(commentsEmail);
+
+    const comment = document.createElement("p");
+    comment.innerText = element.body;
+    commentRow.appendChild(comment);
+
+    const separator = document.createElement("hr");
+    separator.classList.add("my-1");
+    commentRow.appendChild(separator);
+
+    commentSection.appendChild(commentRow);
+  });
+}
+function saveChanges(targetToChange) {
+  const inputField = document.getElementById("changeTitle");
+  const newTittle = inputField.value;
+  const element = document.querySelector(`[data-element="${targetToChange}"]`);
+  if (element) {
+    element.innerText = newTittle;
+    inputField.value = "";
+  }
+}
+function edit(targetToChange) {
+  const inputField = document.getElementById("changeTitle");
+  const newTittle = inputField.value;
+  fetch(`http://localhost:3000/posts/${targetToChange}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: newTittle,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  inputField.value = "";
+}
+// ! EVENT LISTENERS
+loadCommentsBtn.addEventListener("click", () => {
+  fetch(`http://localhost:3000/comments?postId=${pickedPost}`)
+    .then((response) => response.json())
+    .then((comments) => {
+      loadComments(comments);
+      loadCommentsBtn.classList.add("disabled");
+    });
+});
+saveChangesBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  edit(targetToChange);
+  alert("The element was modified successfully");
+});
