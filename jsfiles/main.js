@@ -3,31 +3,6 @@ const urlPost = " http://localhost:3000/posts/";
 const urlComments = "http://localhost:3000/comments/";
 const bodyPage = document.querySelector("#body");
 
-// const divContainer = document.createElement("div");
-// divContainer.setAttribute("class", "container border bg-light");
-// bodyPage.appendChild(divContainer);
-// const divHeader = document.createElement("div");
-// divHeader.setAttribute(
-//   "class",
-//   "row justify-content-center my-3 bg-info border gx-1"
-// );
-// divContainer.appendChild(divHeader);
-// const header = document.createElement("header");
-// header.setAttribute("id", "header");
-// divHeader.appendChild(header);
-// const divH1 = document.createElement("div");
-// divH1.setAttribute("class", "col text-center");
-// header.appendChild(divH1);
-// const h1 = document.createElement("h1");
-// h1.setAttribute("class", "display-6");
-// h1.textContent = "Blog with API";
-// divH1.appendChild(h1);
-// const mainPage = document.createElement("main");
-// mainPage.setAttribute("id", "mainPost");
-// mainPage.setAttribute("class", "col");
-// divContainer.appendChild(mainPage);
-// const mainPost = document.createElement("div");
-// mainPost.setAttribute("class", "col");
 
 const postsBody = document.querySelector("#postsBody");
 const loadCommentsBtn = document.querySelector("#loadCommentsBtn");
@@ -138,9 +113,7 @@ fetch(urlPost)
 
       btnIcon1.id = "btnToggle";
 
-      // titlePost.setAttribute("class", "d-flex");
-      // mainPage.appendChild(mainPost);
-      // mainPost.appendChild(postsBody);
+      
       postsBody.appendChild(postSection);
       postSection.appendChild(divContainer);
       postSection.appendChild(divIcons1);
@@ -165,11 +138,6 @@ fetch(urlPost)
               body.setAttribute("style", "hidden; padding-right: 17px;");
               const userName = e.name;
               const userEmail = e.email;
-              // const sectionPost = document.createElement("section");
-              // sectionPost.setAttribute("class", "section");
-              // sectionPost.style.display = "block";
-              // sectionPost.style.width = "500px";
-              // sectionPost.style.height = "50vh";
 
               const modal = document.createElement("div");
               modal.setAttribute("class", "modal fade show");
@@ -233,14 +201,7 @@ fetch(urlPost)
               modalBtnClose.setAttribute("class", " btn btn-secondary m-0");
               modalBtnClose.setAttribute("data-bs-dismiss", "modal");
               modalBtnClose.textContent = "Close";
-              // const modalBtnSave = document.createElement("button");
-              // modalBtnSave.setAttribute("type", "button");
-              // modalBtnSave.setAttribute("class", " btn btn-secondary");
-              // modalBtnSave.setAttribute("data-bs-dismiss", "modal");
-              // modalBtnSave.textContent = "Save changes";
 
-              // mainPage.appendChild(sectionPost);
-              // sectionPost.appendChild(modal);
               modal.appendChild(modalDialog);
               modalDialog.appendChild(modalContent);
               modalContent.appendChild(modalHeader);
@@ -264,25 +225,13 @@ fetch(urlPost)
               modalCancel.addEventListener("click", returnBody);
 
               function returnBody() {}
-              // sectionPost.appendChild(titlePost);
-              // sectionPost.appendChild(paragraph);
-
-              // const user = document.createElement("h4");
-              // user.textContent = "USER";
-              // sectionPost.appendChild(user);
-
-              // userName.textContent = ele.name;
-
-              // sectionPost.appendChild(userName);
-              // sectionPost.appendChild(userEmail);
-              // const btnComment = document.createElement("button");
-              // btnComment.te;
+              
             });
           });
       }
     });
     console.log(data);
-    // const btnIconToggle = document.querySelector("#btnToggle");
+   
   });
 
 function deleteComents() {
