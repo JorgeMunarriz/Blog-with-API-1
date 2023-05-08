@@ -85,7 +85,7 @@ fetch(urlPost)
       btnIcon1.appendChild(editPostIcon1);
       const btnIcon2 = document.createElement("button");
       btnIcon2.classList.add("btn");
-      btnIcon2.classList.add("btn-dark");
+      btnIcon2.classList.add("btn-danger");
       btnIcon2.setAttribute("data-elementNumber", elementNumber);
       btnIcon2.setAttribute("type", "button");
       btnIcon2.addEventListener("click", (event) => {
@@ -105,7 +105,7 @@ fetch(urlPost)
       btnIcon2.appendChild(deletePostIcon2);
 
       paragraph.textContent = element.body;
-      btnIcon1.setAttribute("class", "btn btn-dark");
+      btnIcon1.setAttribute("class", "btn btn-success");
       btnIcon1.setAttribute("type", "button");
       btnIcon1.setAttribute("data-bs-toggle", "modal");
       btnIcon1.setAttribute("data-bs-target", "#editorModal");
